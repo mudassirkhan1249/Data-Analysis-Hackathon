@@ -81,7 +81,7 @@ st.set_page_config(
 # APPLICATION CONSTANTS
 # ============================================================
 
-DATA_PATH = "../Cleaned_Data/master_olist_cleaned_final.csv"
+DATA_PATH = "https://drive.google.com/file/d/1FFTfAQPNGrpo1_s-ROSiimIOIzd9TAw5/view?usp=drive_link"
 
 APP_TITLE = "Olist E-Commerce Ecosystem Analytics"
 
