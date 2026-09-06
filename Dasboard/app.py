@@ -227,12 +227,26 @@ st.markdown(
 # DATA LOADER
 # ============================================================
 
+import os
+import gdown
+import numpy as np
+import pandas as pd
+import streamlit as st
+
+FILE_ID = "1FFTfAQPNGrpo1_s-ROSiimIOIzd9TAw5"
+LOCAL_FILE = "master_olist_cleaned_final.csv"
+
 @st.cache_data(show_spinner="Loading Olist data...")
-def load_data(path):
+def load_data(path=None):
+    # Drive se local disk par stream download logic
+    if not os.path.exists(LOCAL_FILE):
+        url = f"https://drive.google.com/uc?id={FILE_ID}"
+        gdown.download(url, LOCAL_FILE, quiet=False)
 
     df = pd.read_csv(
-        path,
+        LOCAL_FILE,
         low_memory=False,
+        on_bad_lines="skip"
     )
 
     missing = [
@@ -282,7 +296,6 @@ def load_data(path):
         "customer_unique_id",
         "seller_id",
     ]:
-
         df[col] = (
             df[col]
             .fillna("Unknown")
@@ -299,7 +312,6 @@ def load_data(path):
         "customer_state",
         "product_category_name_english",
     ]:
-
         df[col] = (
             df[col]
             .fillna("Unknown")
