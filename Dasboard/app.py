@@ -82,6 +82,8 @@ st.set_page_config(
 
 DATA_PATH = "../Cleaned_Data/master_olist_cleaned_final.csv"
 
+CSV_URL = "https://github.com/mudassirkhan1249/Data-Analysis-Hackathon/releases/download/v1.0.0/master_olist_cleaned_final.csv"
+
 APP_TITLE = "Olist E-Commerce Ecosystem Analytics"
 
 REPORT_FILE_NAME = "Olist_Executive_Report.pdf"
@@ -227,11 +229,12 @@ st.markdown(
 # ============================================================
 
 @st.cache_data(show_spinner="Loading Olist data...")
-def load_data(path):
+def load_data(path = None):
 
     df = pd.read_csv(
-        path,
+        CSV_URL,
         low_memory=False,
+        on_bad_lines="skip"
     )
 
     missing = [
