@@ -39,6 +39,9 @@
 import io
 import math
 from datetime import datetime
+import os
+import requests
+import gdown
 
 import numpy as np
 import pandas as pd
@@ -227,12 +230,7 @@ st.markdown(
 # DATA LOADER
 # ============================================================
 
-import os
-import gdown
-import numpy as np
-import pandas as pd
-import streamlit as st
-
+# Setup Variables
 FILE_ID = "1FFTfAQPNGrpo1_s-ROSiimIOIzd9TAw5"
 LOCAL_FILE = "master_olist_cleaned_final.csv"
 
@@ -241,7 +239,15 @@ def load_data(path=None):
     # Drive se local disk par stream download logic
     if not os.path.exists(LOCAL_FILE):
         url = f"https://drive.google.com/uc?id={FILE_ID}"
-        gdown.download(url, LOCAL_FILE, quiet=False)
+        try:
+            # Safe gdown download (large files warning bypass)
+            gdown.download(url, LOCAL_FILE, quiet=False, fuzzy=True)
+        except Exception:
+            # Fallback method if gdown fails
+            direct_url = f"https://drive.google.com/uc?export=download&id={FILE_ID}"
+            res = requests.get(direct_url)
+            with open(LOCAL_FILE, "wb") as f:
+                f.write(res.content)
 
     df = pd.read_csv(
         LOCAL_FILE,
